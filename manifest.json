@@ -1,0 +1,32 @@
+{
+	"name": "Pocket-like",
+	"version": "0.0.1",
+	"manifest_version": 2,
+	"description": "Добавляйте статьи в Pocket всего за один клик",
+	"homepage_url": "http://extensionizr.com",
+	"permissions": [
+		"https://learn.javascript.ru/*",
+		"http://learn.javascript.ru/*",
+		"storage"
+	],
+	"content_scripts": [
+		{
+			"matches": [
+				"https://*/*",
+				"http://*/*"
+			],
+			"css": [
+				"style.css"
+			]
+		},
+		{
+			"matches": [
+				"https://*/*",
+				"http://*/*"
+			],
+			"js": [
+				"script.js"
+			]
+		}
+	]
+}
