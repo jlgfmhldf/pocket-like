@@ -12,8 +12,8 @@
 	"content_scripts": [
 		{
 			"matches": [
-				"https://*/*",
-				"http://*/*"
+				"https://learn.javascript.ru/*",
+				"http://learn.javascript.ru/*"
 			],
 			"css": [
 				"style.css"
