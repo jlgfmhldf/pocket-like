@@ -25,31 +25,27 @@ window.onload = function () {
 		w = window,
 		isPocket = w.location.href.indexOf('getpocket.com') != -1;
 
-	localStorage.consumer_key = '56284-79593f636813881ec120103b';
-	localStorage.redirect_uri = w.location.href
-
+	const consumerKey = '56284-79593f636813881ec120103b'
+	const redirectURI = window.location.href
 
 	const request = () =>
 		api.ajax('oauth/request', {
-			consumer_key: localStorage.consumer_key,
-			redirect_uri: localStorage.redirect_uri
+			consumer_key: consumerKey,
+			redirect_uri: redirectURI,
 		})
 
 	const authorize = (code) =>
 		 api.ajax('oauth/authorize', {
-			 consumer_key: localStorage.consumer_key,
+			 consumer_key: consumerKey,
 			 code,
 		 })
 
 	const add = () => api.ajax('add', {
 		title: 'Тест',
 		url: w.location.href,
-		consumer_key: localStorage.consumer_key,
+		consumer_key: consumerKey,
 		access_token: localStorage.pl_accessToken,
-		// time: Date.now(),
 	})
-
-	console.log(localStorage)
 
 	!isPocket && add()
 		.then(
@@ -76,16 +72,11 @@ window.onload = function () {
 						.then(({ access_token, username })=> {
 							localStorage.pl_accessToken = access_token
 							localStorage.pl_username = username
-
-							console.log('test authorize')
 						})
 				}
 			}
 		)
 		.catch(console.error)
-
-	console.warn('pocket-like test')
-
 }
 
 //TODO: промисы
