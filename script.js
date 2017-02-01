@@ -23,8 +23,7 @@ window.onload = function () {
 			}
 		},
 		w = window,
-		isGetPocket = w.location.href.indexOf('getpocket.com') != -1,
-		isSavePage = w.location.href.indexOf('learn.javascript.ru/attributes-and-custom-properties') != -1
+		isPocket = w.location.href.indexOf('getpocket.com') != -1;
 
 	localStorage.consumer_key = '56284-79593f636813881ec120103b';
 	localStorage.redirect_uri = w.location.href
@@ -36,48 +35,54 @@ window.onload = function () {
 			redirect_uri: localStorage.redirect_uri
 		})
 
+	const authorize = (code) =>
+		 api.ajax('oauth/authorize', {
+			 consumer_key: localStorage.consumer_key,
+			 code,
+		 })
 
-	const callbackRequest = res => {
-		window.location.href = `https://getpocket.com/auth/authorize?request_token=${localStorage.request_token}&redirect_uri=${localStorage.redirect_uri}`
-	}
+	const add = () => api.ajax('add', {
+		title: 'Тест',
+		url: w.location.href,
+		consumer_key: localStorage.consumer_key,
+		access_token: localStorage.pl_accessToken,
+		// time: Date.now(),
+	})
 
-	 const authorize = () =>
-			 api.ajax('oauth/authorize', {
-				 consumer_key: localStorage.consumer_key,
-				 code: localStorage.request_token
-			 })
+	console.log(localStorage)
 
-	 const add = () => api.ajax('add', {
-		 title: 'Тест',
-		 url: `http://learn.javascript.ru/attributes-and-custom-properties`,
-		 consumer_key: localStorage.consumer_key,
-		 access_token: localStorage.access_token,
-		 time: Date.now(),
-	 })
-
-	!isGetPocket && add()
+	!isPocket && add()
 		.then(
 			response => {
 				console.log('page added')
 			},
 			error => {
-				authorize()
-					.then(
-						response => {
-							localStorage.isAuthorized = 'true'
-							return Promise.reject()
-						},
-						request()
-							.then(
-								response => {
-									localStorage.isRequested = 'true';
-									localStorage.request_token = response.code;
-									callbackRequest(response)
-								})
-					)
+				if (!localStorage.pl_requestToken) {
+					return request()
+						.then(({ code }) => {
 
+							localStorage.pl_requestToken = code
+
+							if (!localStorage.pl_IsAuthorizeToken) {
+								window.location.href = `https://getpocket.com/auth/authorize?request_token=${code}&redirect_uri=${w.location.href}`
+								localStorage.pl_IsAuthorizeToken = 'true'
+							}
+						})
+				}
+
+				if (!localStorage.pl_accessToken) {
+
+					return authorize(localStorage.pl_requestToken)
+						.then(({ access_token, username })=> {
+							localStorage.pl_accessToken = access_token
+							localStorage.pl_username = username
+
+							console.log('test authorize')
+						})
+				}
 			}
 		)
+		.catch(console.error)
 
 	console.warn('pocket-like test')
 

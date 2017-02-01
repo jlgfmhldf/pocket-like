@@ -5,15 +5,13 @@
 	"description": "Добавляйте статьи в Pocket всего за один клик",
 	"homepage_url": "http://extensionizr.com",
 	"permissions": [
-		"https://learn.javascript.ru/*",
-		"http://learn.javascript.ru/*",
+		"https://*/*",
 		"storage"
 	],
 	"content_scripts": [
 		{
 			"matches": [
-				"https://learn.javascript.ru/*",
-				"http://learn.javascript.ru/*"
+				"https://*/*"
 			],
 			"css": [
 				"style.css"
