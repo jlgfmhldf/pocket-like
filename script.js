@@ -1,3 +1,4 @@
+
 window.onload = function () {
 	var
 		api = {
@@ -78,12 +79,3 @@ window.onload = function () {
 		)
 		.catch(console.error)
 }
-
-//TODO: промисы
-//TODO: отрисовать иконку приложения
-//Встроить в дом, рядом с иконкой feadly
-//Подглядеть, как другие расширения обрабатывают ошибки.
-// Как спрятать consumer_key
-// поместить некоторые данные в chrome.storage
-// https://learn.javascript.ru/fetch
-// лучше открывать авторизацию в новом окне
