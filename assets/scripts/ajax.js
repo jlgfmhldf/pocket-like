@@ -1,5 +1,4 @@
-
-module.exports =  function( path, data ) {
+export default function( path, data ) {
 	const headers = new Headers({
 		'Content-Type': 'application/json; charset=UTF8',
 		'X-Accept': 'application/json'

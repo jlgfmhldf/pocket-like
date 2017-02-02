@@ -7,7 +7,7 @@ module.exports = {
 	entry: './assets/scripts/index.js',
     output: {
     	path: './',
-        filename: 'script.bundle.js',
+        filename: 'index.js',
     },
     watch: isDevelopment,
     watchOptions: {
