@@ -9,35 +9,40 @@ window.onload = function () {
 
 	const { pl_accessToken, pl_requestToken } = localStorage
 
-	!isPocket && pl.add(pl_accessToken)
-		.then(
-			() => {
-				console.info('page added!')
-			},
-			() => {
-				if (!pl_requestToken) {
-					return pl
-						.request(redirectURI)
-						.then(({ code }) => {
+	// !isPocket && pl.add(pl_accessToken)
+	// 	.then(
+	// 		() => {
+	// 			console.info('page added!')
+	// 		},
+	// 		() => {
+	// 			if (!pl_requestToken) {
+	// 				return pl
+	// 					.request(redirectURI)
+	// 					.then(({ code }) => {
+	//
+	// 						localStorage.pl_requestToken = code
+	//
+	// 						if (!localStorage.pl_IsAuthorizeToken) {
+	// 							window.location.href = `https://getpocket.com/auth/authorize?request_token=${code}&redirect_uri=${w.location.href}`
+	// 							localStorage.pl_IsAuthorizeToken = 'true'
+	// 						}
+	// 					})
+	// 			}
+	//
+	// 			if (!pl_accessToken) {
+	// 				return pl
+	// 					.authorize(pl_requestToken)
+	// 					.then(({ access_token, username }) => {
+	// 						localStorage.pl_accessToken = access_token
+	// 						localStorage.pl_username = username
+	// 					})
+	// 			}
+	// 		}
+	// 	)
+	// 	.catch(console.error)
 
-							localStorage.pl_requestToken = code
+	const button = window.document.createElement('div')
+	button.className = 'pocketLike'
 
-							if (!localStorage.pl_IsAuthorizeToken) {
-								window.location.href = `https://getpocket.com/auth/authorize?request_token=${code}&redirect_uri=${w.location.href}`
-								localStorage.pl_IsAuthorizeToken = 'true'
-							}
-						})
-				}
-
-				if (!pl_accessToken) {
-					return pl
-						.authorize(pl_requestToken)
-						.then(({ access_token, username }) => {
-							localStorage.pl_accessToken = access_token
-							localStorage.pl_username = username
-						})
-				}
-			}
-		)
-		.catch(console.error)
+	window.document.body.appendChild(button)
 }
