@@ -23,7 +23,7 @@
 				"http://*/*"
 			],
 			"js": [
-				"script.js"
+				"index.js"
 			]
 		}
 	]

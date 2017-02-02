@@ -1,3 +1,6 @@
+import ajax from './ajax'
+
+console.log(ajax)
 
 window.onload = function () {
 	var
