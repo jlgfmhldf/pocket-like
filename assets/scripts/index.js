@@ -7,13 +7,15 @@ window.onload = function () {
 
 	const pl = new PocketLike('56284-79593f636813881ec120103b')
 
-	!isPocket && pl.add(localStorage.pl_accessToken)
+	const { pl_accessToken, pl_requestToken } = localStorage
+
+	!isPocket && pl.add(pl_accessToken)
 		.then(
 			() => {
 				console.info('page added!')
 			},
 			() => {
-				if (!localStorage.pl_requestToken) {
+				if (!pl_requestToken) {
 					return pl
 						.request(redirectURI)
 						.then(({ code }) => {
@@ -27,9 +29,9 @@ window.onload = function () {
 						})
 				}
 
-				if (!localStorage.pl_accessToken) {
+				if (!pl_accessToken) {
 					return pl
-						.authorize(localStorage.pl_requestToken)
+						.authorize(pl_requestToken)
 						.then(({ access_token, username }) => {
 							localStorage.pl_accessToken = access_token
 							localStorage.pl_username = username
