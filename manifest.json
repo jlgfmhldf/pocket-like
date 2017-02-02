@@ -26,5 +26,6 @@
 				"index.js"
 			]
 		}
-	]
+	],
+	"web_accessible_resources": ["assets/icons/icon.png"]
 }

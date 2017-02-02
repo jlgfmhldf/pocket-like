@@ -7,5 +7,5 @@
 - [ ] лучше открывать авторизацию в новом окне
 - [x] Подключить сюда вебпак, чтобы собирал мне итоговый js из инклюдов
 - [ ] Вебпак должен транспилить мои скрипты в соответсвии с can i use Хрома
-- [ ] http://stackoverflow.com/questions/11804332/insert-an-image-in-chrome-extension
+- [x] http://stackoverflow.com/questions/11804332/insert-an-image-in-chrome-extension
 

@@ -1,4 +1,5 @@
 const webpack = require('webpack')
+const NpmInstallPlugin = require('npm-install-webpack-plugin')
 const NODE_ENV = process.env.NODE_ENV || 'development'
 const isDevelopment = NODE_ENV === 'development'
 const { stringify } = JSON
@@ -16,6 +17,7 @@ module.exports = {
     devtool: isDevelopment ? 'cheap-inline-module-source-map' : null,
     plugins: [
         new webpack.NoErrorsPlugin(),
+		new NpmInstallPlugin(),
         new webpack.DefinePlugin({
             NODE_ENV: stringify(NODE_ENV),
             LANG: stringify('ru')

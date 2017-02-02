@@ -2,7 +2,7 @@
   "name": "webpack-screencast-project",
   "version": "1.0.0",
   "description": "",
-  "main": "home.js",
+  "main": "index.js",
   "dependencies": {
     "babel": "^6.5.2",
     "babel-core": "^6.22.1",
@@ -10,9 +10,12 @@
     "babel-plugin-transform-es2015-modules-commonjs": "^6.22.0",
     "babel-preset-es2015": "^6.22.0",
     "babel-runtime": "^6.20.0",
+    "debounce": "1.0.0",
     "webpack": "^1.14.0"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "npm-install-webpack-plugin": "^2.0.2"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
