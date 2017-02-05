@@ -21,7 +21,7 @@ export default class PocketLike {
 
 	add(accessToken,) {
 		return ajax('add', {
-			title: 'Тест', //TODO
+			title: 'Тест', //TODO 1 1
 			url: window.location.href,
 			consumer_key: this.consumerKey,
 			access_token: accessToken,
