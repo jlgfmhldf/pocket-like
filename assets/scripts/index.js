@@ -1,5 +1,6 @@
 import PocketLike from './pocket-like-api'
 import debounce from 'debounce'
+import index from '../components/index'
 
 window.onload = function () {
 	var w = window,
