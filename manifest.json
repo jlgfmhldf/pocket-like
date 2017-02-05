@@ -6,12 +6,14 @@
 	"homepage_url": "http://extensionizr.com",
 	"permissions": [
 		"https://*/*",
+		"http://*/*",
 		"storage"
 	],
 	"content_scripts": [
 		{
 			"matches": [
-				"https://*/*"
+				"https://*/*",
+				"http://*/*"
 			],
 			"css": [
 				"style.css"

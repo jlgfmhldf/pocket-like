@@ -11,8 +11,6 @@ window.onload = function () {
 	const { pl_accessToken, pl_requestToken } = localStorage
 
 	const onButtonClick = debounce(() => {
-		console.log('start add')
-
 		return !isPocket && pl.add(pl_accessToken)
 			.then(
 				() => {
