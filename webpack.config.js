@@ -41,7 +41,11 @@ module.exports = {
 	},
     resolve: {
         modulesDirectories: ['node_modules'],
-        extensions: ['', '.js', '.jsx']
+        extensions: ['', '.js', '.jsx'],
+		alias: {
+			'react': 'preact-compat',
+			'react-dom': 'preact-compat'
+		},
     },
     resolveLoader: {
         modulesDirectories: ['node_modules'],
