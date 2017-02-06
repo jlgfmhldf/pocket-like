@@ -10,7 +10,9 @@
     "button": "1.1.1",
     "debounce": "1.0.0",
     "preact": "7.1.0",
-    "preact-compat": "3.13.1"
+    "preact-compat": "3.13.1",
+    "react-redux": "5.0.2",
+    "redux": "3.6.0"
   },
   "devDependencies": {
     "babel": "^6.5.2",
