@@ -5,7 +5,7 @@ const isDevelopment = NODE_ENV === 'development'
 const { stringify } = JSON
 
 module.exports = {
-	entry: './assets/scripts/index.js',
+	entry: './src/scripts/index.js',
     output: {
     	path: './',
         filename: 'index.js',

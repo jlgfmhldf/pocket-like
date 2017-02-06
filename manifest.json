@@ -29,5 +29,5 @@
 			]
 		}
 	],
-	"web_accessible_resources": ["assets/icons/icon.png"]
+	"web_accessible_resources": ["src/icons/icon.png"]
 }

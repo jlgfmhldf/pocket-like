@@ -1,6 +1,7 @@
+import { h, render } from 'preact'
 import PocketLike from './pocket-like-api'
 import debounce from 'debounce'
-import index from '../components/index'
+import App from '../components/index'
 
 window.onload = function () {
 	var w = window,
@@ -45,16 +46,12 @@ window.onload = function () {
 			.catch(console.error)
 	}, 10000, true)
 
-
-	const button = window.document.createElement('div')
-	button.className = 'pocketLike'
-	button.style.backgroundImage = `url(${chrome.extension.getURL('assets/icons/icon.png')})`
-
-	window.document.body.appendChild(button)
-
-	button.addEventListener('click', () => {
-		onButtonClick()
-	})
+	render(
+		<App
+			onAdd={onButtonClick}
+		/>,
+		document.body
+	)
 
 	console.log('pocket-like')
 }
