@@ -1,5 +1,6 @@
 .pocketLike {
 	position: fixed;
+	z-index: 10000000000000000;
 	bottom: 40px;
 	right: 20px;
 	width: 24px;
