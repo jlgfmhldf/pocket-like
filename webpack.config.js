@@ -24,7 +24,6 @@ module.exports = {
             NODE_ENV: stringify(NODE_ENV),
             LANG: stringify('ru')
         }),
-		new webpack.optimize.OccurenceOrderPlugin(),
     ],
 	module: {
 		preLoaders: [
@@ -33,12 +32,20 @@ module.exports = {
 				loaders: ['eslint'],
 			}
 		],
-		loaders: [
-			{
-				test: /\.jsx?$/,
-				loader: 'babel',
-			},
-		]
+		loaders: [{
+			test: /\.js$/,
+			loader: 'babel',
+			query: {
+				presets: ['es2015'],
+			}
+		},
+		{
+			test: /\.jsx$/,
+			loader: 'babel',
+			query: {
+				presets: ['es2015'],
+			}
+		}]
 	},
     resolve: {
         modulesDirectories: ['node_modules'],
