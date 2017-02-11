@@ -1,5 +1,7 @@
 const webpack = require('webpack')
 const NpmInstallPlugin = require('npm-install-webpack-plugin')
+const  path = require("path");
+
 const NODE_ENV = process.env.NODE_ENV || 'development'
 const isDevelopment = NODE_ENV === 'development'
 const { stringify } = JSON
@@ -25,10 +27,18 @@ module.exports = {
 		new webpack.optimize.OccurenceOrderPlugin(),
     ],
 	module: {
-		loaders: [{
-			test: /\.jsx?$/,
-			loader: 'babel',
-		}]
+		preLoaders: [
+			{
+				test: /\.jsx?$/,
+				loaders: ['eslint'],
+			}
+		],
+		loaders: [
+			{
+				test: /\.jsx?$/,
+				loader: 'babel',
+			},
+		]
 	},
     resolve: {
         modulesDirectories: ['node_modules'],
