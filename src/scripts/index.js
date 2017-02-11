@@ -1,9 +1,6 @@
 import { h, render } from 'preact'
-import { createStore } from 'redux'
-import { Provider } from 'react-redux'
-import debounce from 'debounce'
-
 import PocketLike from './pocket-like-api'
+import debounce from 'debounce'
 import App from '../components/index'
 
 var w = window,
