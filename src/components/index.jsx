@@ -5,6 +5,7 @@ export default class Index extends Component {
 
 	render() {
 		const { onAdd } = this.props
+
 		return <div>
 			<Button onAdd={onAdd} />
 		</div>

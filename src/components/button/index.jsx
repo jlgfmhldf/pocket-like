@@ -6,7 +6,7 @@ export default class Button extends Component {
 		const { onAdd } = this.props
 
 		return <div
-			class="pocketLike"
+			class='pocketLike'
 			onClick={onAdd}
 			style={{
 				backgroundImage: `url(${chrome.extension.getURL('src/icons/icon.png')})`

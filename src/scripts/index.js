@@ -55,5 +55,5 @@ render(
 	document.body
 )
 
-console.log('pocket-like test2')
+console.log('pocket-like test3')
 
