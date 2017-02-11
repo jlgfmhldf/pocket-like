@@ -22,21 +22,12 @@ module.exports = {
             NODE_ENV: stringify(NODE_ENV),
             LANG: stringify('ru')
         }),
+		new webpack.optimize.OccurenceOrderPlugin(),
     ],
 	module: {
 		loaders: [{
-			test: /\.js$/,
+			test: /\.jsx?$/,
 			loader: 'babel',
-			query: {
-				presets: ['es2015'],
-			}
-		},
-		{
-			test: /\.jsx$/,
-			loader: 'babel',
-			query: {
-				presets: ['es2015'],
-			}
 		}]
 	},
     resolve: {
