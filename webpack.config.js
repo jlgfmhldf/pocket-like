@@ -7,7 +7,7 @@ const isDevelopment = NODE_ENV === 'development'
 const { stringify } = JSON
 
 module.exports = {
-	entry: './src/scripts/index.js',
+	entry: './src/index.js',
     output: {
     	path: './',
         filename: 'index.js',
@@ -18,7 +18,6 @@ module.exports = {
     },
     devtool: isDevelopment ? 'cheap-inline-module-source-map' : null,
     plugins: [
-        new webpack.NoErrorsPlugin(),
 		new NpmInstallPlugin(),
         new webpack.DefinePlugin({
             NODE_ENV: stringify(NODE_ENV),
