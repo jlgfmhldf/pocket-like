@@ -8,7 +8,9 @@ export default function( path, data ) {
 		if (response.status >= 200 && response.status < 300) {
 			return Promise.resolve(response.json())
 		} else {
-			return Promise.reject(new Error(response.statusText))
+			const { statusText, status } = response
+
+			return Promise.reject({ statusText, status })
 		}
 	}
 
