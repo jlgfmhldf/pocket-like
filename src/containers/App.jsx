@@ -18,15 +18,14 @@ const mapDispatchToProps = dispatch => {
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
-
 export default class App extends Component {
 	render() {
-		const { onAdd } = this.props
+		const { add } = this.props.actions
 
 		console.log(this.props)
 
 		return <div>
-			<Button onAdd={onAdd} />
+			<Button onAdd={add} />
 		</div>
 	}
 
