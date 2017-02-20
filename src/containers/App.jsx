@@ -13,19 +13,21 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
 	return {
-		actions: bindActionCreators(actions, dispatch) //TODO remove bindActionCreators
+		...bindActionCreators({
+			add: actions.add,
+		}, dispatch)
 	}
 }
 
 @connect(mapStateToProps, mapDispatchToProps)
 export default class App extends Component {
 	render() {
-		const { add } = this.props.actions
+		const { add } = this.props
 
 		console.log(this.props)
 
 		return <div>
-			<Button onAdd={add} />
+			<Button onClick={add} />
 		</div>
 	}
 
