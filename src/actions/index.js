@@ -35,6 +35,17 @@ export const getRequestToken = () => dispatch => {
 		})
 }
 
+export const getAccessToken = requestToken => dispatch => {
+	return api
+		.authorize(requestToken)
+		.then(data => {
+			console.info('getAccessToken', data)
+		})
+		.catch(() => {
+			dispatch(error())
+		})
+}
+
 export const authorization = ()  =>  {
 
 	const { pl_accessToken, pl_requestToken } = localStorage

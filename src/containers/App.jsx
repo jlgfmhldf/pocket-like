@@ -3,7 +3,6 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as actions from '../actions'
 import { pick } from 'lodash'
-import lodash from 'lodash'
 
 import Button from '../components/button'
 
@@ -17,9 +16,10 @@ const mapDispatchToProps = dispatch => {
 	return {
 		...bindActionCreators(
 			pick(
-				...[
+				actions, ...[
 					'add',
-					'getRequestToken'
+					'getRequestToken',
+					'getAccessToken',
 				]
 			),
 			dispatch
@@ -30,14 +30,29 @@ const mapDispatchToProps = dispatch => {
 @connect(mapStateToProps, mapDispatchToProps)
 export default class App extends Component {
 	componentWillMount() {
-		const { requestToken, authorizeToken } = this.props
+		const {
+			requestToken,
+			accessToken,
+			isAuthorizedToken,
+			getRequestToken,
+			getAccessToken,
+		} = this.props
 
 		if(!requestToken) {
-			// getRequestToken()
+			getRequestToken()
 		}
 
-		if(requestToken && !authorizeToken) {
-			// getAuthorizeToken()
+		if(requestToken && !isAuthorizedToken) {
+
+			location.href = `
+			https://getpocket.com/auth/authorize?
+			request_token=${requestToken}&
+			redirect_uri=${window.location.href}`
+
+		}
+
+		if (!accessToken) {
+			getAccessToken(requestToken)
 		}
 
 	}
