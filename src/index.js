@@ -56,6 +56,3 @@ render(
 	</Provider>,
 	document.body
 )
-
-console.log('pocket-like test49')
-
