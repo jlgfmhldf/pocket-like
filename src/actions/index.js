@@ -3,8 +3,10 @@ import { REQUEST_ADD, API_KEY } from '../constants'
 
 const api = new PocketLike(API_KEY)
 
-const { pl_accessToken, pl_requestToken } = localStorage
+const isPocket = window.location.href.indexOf('getpocket.com') != -1
 
+
+const { pl_accessToken, pl_requestToken } = localStorage
 
 const requestAdd = () => ({
 	type: REQUEST_ADD,
@@ -29,6 +31,9 @@ export const getRequestToken = () => dispatch => {
 		.request(location.href)
 		.then(data => {
 			console.info('getRequestToken', data)
+
+			localStorage.pl_requestToken = data.code
+			localStorage.pl_requestToken_is_authorized = false
 		})
 		.catch(() => {
 			dispatch(error())
@@ -40,6 +45,8 @@ export const getAccessToken = requestToken => dispatch => {
 		.authorize(requestToken)
 		.then(data => {
 			console.info('getAccessToken', data)
+
+			localStorage.pl_accessToken = data.access_token
 		})
 		.catch(() => {
 			dispatch(error())
@@ -59,21 +66,71 @@ export const authorization = ()  =>  {
 		})
 }
 
-export const add = () => (dispatch) => {
-
-	dispatch(requestAdd())
-
-	return api.add(pl_accessToken)
-		.then(() => {
-			console.log('success')
-		})
-		.catch((err) => {
-			const { status } = err
-
-			if (status === 401) {
-				dispatch(requestAuth())
-
-				authorization()
-			}
-		})
+const authorizeRedirect = (token) => {
+	localStorage.pl_requestToken_is_authorized = true // TODO
+	location.href = `
+	https://getpocket.com/auth/authorize?
+	request_token=${token}&
+	redirect_uri=${window.location.href}`
 }
+
+const handleAuthorizeError = () => dispatch => {
+	const {
+		pl_accessToken,
+		pl_requestToken,
+		pl_IsAuthorizeToken,
+		pl_requestToken_is_authorized,
+	} = localStorage
+
+	return new Promise((resolve) => {
+		if(!pl_requestToken) {
+			return dispatch(getRequestToken())
+		}
+
+		return resolve()
+	})
+	.then(() => {
+		console.log('test2')
+		if(pl_requestToken && pl_requestToken_is_authorized === 'false') {
+			console.log('need redirect')
+			return authorizeRedirect(pl_requestToken)
+		}
+	})
+	.then(() => {
+		console.log('test3')
+
+		if(!pl_accessToken) {
+			return dispatch(getAccessToken(pl_requestToken))
+		}
+	})
+}
+
+export const addOrAuthorizeAndAdd = () => dispatch => {
+	const {
+		pl_accessToken,
+		pl_requestToken,
+		pl_IsAuthorizeToken,
+		pl_requestToken_is_authorized,
+	} = localStorage
+
+	const isIncompleteLs = !(
+		pl_accessToken &&
+		pl_requestToken &&
+		pl_IsAuthorizeToken &&
+		pl_requestToken_is_authorized
+	)
+
+	if (!isPocket) {
+
+		if(!isIncompleteLs) {
+			return api.add(pl_accessToken)
+
+			//TODO обрабатывать ошибки из апи
+		}
+
+		return dispatch(handleAuthorizeError())
+			.then(api.add(pl_accessToken))
+	}
+}
+
+// TODO: написать для дебагга экшн сброса ls
