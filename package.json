@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "button": "1.1.1",
+    "chrome-storage-wrapper": "0.1.4",
     "lodash": "4.17.4",
     "preact": "7.1.0",
     "preact-compat": "3.13.1",

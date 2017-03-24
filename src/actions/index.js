@@ -1,3 +1,4 @@
+import storage from 'chrome-storage-wrapper'
 import PocketLike from '../scripts/pocket-like-api'
 import { REQUEST_ADD, API_KEY } from '../constants'
 
@@ -5,8 +6,11 @@ const api = new PocketLike(API_KEY)
 
 const isPocket = window.location.href.indexOf('getpocket.com') != -1
 
-
-const { pl_accessToken, pl_requestToken } = localStorage
+const storageItems = [
+	'accessToken',
+	'requestToken',
+	'requestTokenIsAuthorized',
+]
 
 const requestAdd = () => ({
 	type: REQUEST_ADD,
@@ -30,32 +34,32 @@ export const getRequestToken = () => dispatch => {
 	return api
 		.request(location.href)
 		.then(data => {
-			console.info('getRequestToken', data)
+			const requestToken = data.code
 
-			localStorage.pl_requestToken = data.code
-			localStorage.pl_requestToken_is_authorized = false
+			return storage
+				.set({
+					requestToken,
+					requestTokenIsAuthorized: false
+				})
+				.then(() => requestToken)
 		})
-		.catch(() => {
-			dispatch(error())
-		})
+		.catch(() => dispatch(error()))
 }
 
 export const getAccessToken = requestToken => dispatch => {
 	return api
 		.authorize(requestToken)
 		.then(data => {
-			console.info('getAccessToken', data)
+			const accessToken = data.access_token
 
-			localStorage.pl_accessToken = data.access_token
+			return storage
+				.set({ accessToken })
+				.then(() => accessToken)
 		})
-		.catch(() => {
-			dispatch(error())
-		})
+		.catch(() => dispatch(error()))
 }
 
 export const authorization = ()  =>  {
-
-	const { pl_accessToken, pl_requestToken } = localStorage
 
 	return api.request(window.location.href)
 		.then(data => {
@@ -67,70 +71,69 @@ export const authorization = ()  =>  {
 }
 
 const authorizeRedirect = (token) => {
-	localStorage.pl_requestToken_is_authorized = true // TODO
-	location.href = `
-	https://getpocket.com/auth/authorize?
-	request_token=${token}&
-	redirect_uri=${window.location.href}`
+	return storage
+		.set({ requestTokenIsAuthorized: true })
+		.then(() => {
+			location.href = `https://getpocket.com/auth/authorize?
+				request_token=${token}&
+				redirect_uri=${window.location.href}`
+		})
 }
 
 const handleAuthorizeError = () => dispatch => {
-	const {
-		pl_accessToken,
-		pl_requestToken,
-		pl_IsAuthorizeToken,
-		pl_requestToken_is_authorized,
-	} = localStorage
 
-	return new Promise((resolve) => {
-		if(!pl_requestToken) {
+	return storage
+		.get(storage)
+		.then(([
+			requestTokenIsAuthorized,
+			requestToken,
+		]) => {
+
+			if (requestTokenIsAuthorized) {
+				return dispatch(getAccessToken(requestToken))
+			}
+
 			return dispatch(getRequestToken())
-		}
+				.then(requestToken => {
+					console.log('redirect')
+					return authorizeRedirect(requestToken)
+						.then(() => requestToken)
+				})
+		})
 
-		return resolve()
-	})
-	.then(() => {
-		console.log('test2')
-		if(pl_requestToken && pl_requestToken_is_authorized === 'false') {
-			console.log('need redirect')
-			return authorizeRedirect(pl_requestToken)
-		}
-	})
-	.then(() => {
-		console.log('test3')
-
-		if(!pl_accessToken) {
-			return dispatch(getAccessToken(pl_requestToken))
-		}
-	})
 }
 
 export const addOrAuthorizeAndAdd = () => dispatch => {
-	const {
-		pl_accessToken,
-		pl_requestToken,
-		pl_IsAuthorizeToken,
-		pl_requestToken_is_authorized,
-	} = localStorage
+	return storage
+		.get(storageItems)
+		.then(data => {
+			const {
+				accessToken,
+				requestToken,
+				requestTokenIsAuthorized,
+			} = data
 
-	const isIncompleteLs = !(
-		pl_accessToken &&
-		pl_requestToken &&
-		pl_IsAuthorizeToken &&
-		pl_requestToken_is_authorized
-	)
+			const isValidStorage = requestToken && accessToken && requestTokenIsAuthorized !== undefined
 
-	if (!isPocket) {
+			console.log(data)
 
-		if(!isIncompleteLs) {
-			return api.add(pl_accessToken)
+			if (!isPocket) {
 
-			//TODO обрабатывать ошибки из апи
-		}
+				if(isValidStorage && requestTokenIsAuthorized) {
+					return api.add(accessToken)
 
-		return dispatch(handleAuthorizeError())
-			.then(api.add(pl_accessToken))
-	}
+					//TODO обрабатывать ошибки из апи
+				}
+
+				return storage
+					.remove(storageItems)
+					.then(() => {
+						return dispatch(handleAuthorizeError()) //authorize
+							.then(api.add(accessToken))
+					})
+			}
+		})
 }
 
 // TODO: написать для дебагга экшн сброса ls
+// TODO: remove all pl_
