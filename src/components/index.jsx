@@ -1,13 +1,37 @@
 import { h, Component } from 'preact';
-import Button from './button'
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
-export default class Index extends Component {
+import Button from './button';
+import * as actions from '../actions';
+
+const mapStateToProps = state => {
+	return {
+		article: state.article
+	}
+}
+
+const mapDispatchToProps = dispatch => {
+	return {
+		...bindActionCreators(
+			actions, 
+			dispatch
+		)
+	}
+}
+
+@connect(mapStateToProps,mapDispatchToProps)
+export default class App extends Component {
+
+	onAdd = () => {
+		const { addToPocket } = this.props
+
+		addToPocket()
+	}
 
 	render() {
-		const { onAdd } = this.props
-
 		return <div>
-			<Button onAdd={onAdd} />
+			<Button onClick={this.onAdd} />
 		</div>
 	}
 }

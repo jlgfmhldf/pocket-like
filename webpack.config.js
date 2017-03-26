@@ -7,7 +7,7 @@ const isDevelopment = NODE_ENV === 'development'
 const { stringify } = JSON
 
 module.exports = {
-	entry: './src/scripts/index.js',
+	entry: './src/index.js',
     output: {
     	path: './',
         filename: 'index.js',
@@ -35,16 +35,10 @@ module.exports = {
 		loaders: [{
 			test: /\.js$/,
 			loader: 'babel',
-			query: {
-				presets: ['es2015'],
-			}
 		},
 		{
 			test: /\.jsx$/,
 			loader: 'babel',
-			query: {
-				presets: ['es2015'],
-			}
 		}]
 	},
     resolve: {
